@@ -1,12 +1,9 @@
 import type { Route } from './+types/root'
 
 import {
-  MutationCache,
-  QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import { ClientError } from 'graphql-request'
 
 import { NuqsAdapter } from 'nuqs/adapters/react-router/v7'
 import { useState } from 'react'
@@ -61,54 +58,8 @@ export default function App() {
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000,
-            retry: (failureCount, error) => {
-              if (error instanceof ClientError) {
-                if (error?.response?.status === 419) {
-                  return false
-                }
-                if (error?.response?.status === 503) {
-                  return false
-                }
-                return failureCount < 2
-              }
-
-              return false
-            },
           },
         },
-        mutationCache: new MutationCache({
-          onError: async (error) => {
-            if (error instanceof ClientError) {
-              if (error?.response?.status === 503) {
-                globalThis.location.href = '/maintenance-mode'
-              }
-              error?.response?.errors?.map((error) => {
-                // alert("unauthenticated error")
-                if (error.message === 'Unauthenticated.') {
-                  globalThis.location.href = '/login'
-                }
-                return null
-              })
-            }
-          },
-        }),
-        queryCache: new QueryCache({
-          onError: async (error) => {
-            if (error instanceof ClientError) {
-              if (error?.response?.status === 503) {
-                globalThis.location.href = '/maintenance-mode'
-              }
-              error?.response?.errors?.map((error) => {
-                // alert("unauthenticated error")
-                if (error.message === 'Unauthenticated.') {
-                  globalThis.location.href = '/login'
-                }
-
-                return null
-              })
-            }
-          },
-        }),
       }),
   )
 
