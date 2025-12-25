@@ -1,10 +1,18 @@
+import { MenuIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router'
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from '~/components/ui/sheet'
 import { bookingData } from '~/lib/data'
 import { cn } from '~/lib/utils'
 
 export default function Layout() {
   const location = useLocation()
   const isHome = location.pathname === '/'
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen flex-col font-sans">
@@ -57,12 +65,45 @@ export default function Layout() {
             </Link>
           </nav>
 
-          {/* Mobile Menu Button - simplified for MVP */}
-          <div className="md:hidden">
-            <Link to="/booking" className="p-2 text-xs font-bold">BOOK</Link>
-          </div>
+          {/* Mobile Menu */}
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger className={`
+              flex items-center justify-center rounded-md p-2
+              md:hidden
+            `}
+            >
+              <MenuIcon className={cn('size-6', isHome
+                ? 'text-white'
+                : `text-foreground`)}
+              />
+            </SheetTrigger>
+            <SheetContent side="right">
+              <div className="flex flex-col gap-4">
+                <MobileNavLink to="/" onClick={() => setIsMobileMenuOpen(false)}>HOME</MobileNavLink>
+                <MobileNavLink to="/about-us" onClick={() => setIsMobileMenuOpen(false)}>ABOUT US</MobileNavLink>
+                <MobileNavLink to="/gallery" onClick={() => setIsMobileMenuOpen(false)}>GALLERY</MobileNavLink>
+                <MobileNavLink to="/booking" onClick={() => setIsMobileMenuOpen(false)}>BOOKING</MobileNavLink>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </header>
+
+      {/* Floating Book Now Button - Mobile Only */}
+      {!location.pathname.includes('/booking') && (
+        <Link
+          to="/booking"
+          className={`
+            fixed right-6 bottom-6 z-40 flex items-center gap-2 rounded-full
+            bg-primary px-6 py-3 font-bold text-primary-foreground shadow-lg
+            transition-all
+            hover:scale-105
+            md:hidden
+          `}
+        >
+          BOOK NOW
+        </Link>
+      )}
 
       <main className="flex-1">
         <Outlet />
@@ -136,6 +177,22 @@ function NavLink({ to, children, isHome }: { to: string, children: React.ReactNo
           'text-foreground hover:text-primary': !isHome,
         },
       )}
+    >
+      {children}
+    </Link>
+  )
+}
+
+function MobileNavLink({ to, children, onClick }: { to: string, children: React.ReactNode, onClick?: () => void }) {
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      className={`
+        rounded-lg px-4 py-3 text-lg font-medium text-foreground
+        transition-colors
+        hover:bg-muted
+      `}
     >
       {children}
     </Link>
