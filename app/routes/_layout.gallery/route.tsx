@@ -3,33 +3,33 @@ import { cn } from '~/lib/utils'
 const images = [
   {
     src: '/hero.jpg',
-    alt: 'Dense forest canopy of Dampa',
-    title: 'The Heart of the Jungle',
+    alt: 'Lorem ipsum dolor sit amet',
+    title: 'Consectetur adipiscing elit',
     colSpan: 'md:col-span-2 md:row-span-2',
   },
   {
     src: '/gallery/gallery-1.jpeg',
-    alt: 'Scenic view of the reserve',
-    title: 'Misty Mountains',
+    alt: 'Sed do eiusmod tempor',
+    title: 'Incididunt ut labore',
     colSpan: 'md:col-span-1 md:row-span-1',
   },
   {
     src: '/gallery/gallery-2.jpeg',
-    alt: 'Wildlife sighting',
-    title: 'Forest Trails',
+    alt: 'Et dolore magna aliqua',
+    title: 'Ut enim ad minim veniam',
     colSpan: 'md:col-span-1 md:row-span-1',
   },
   // Reusing images for layout demo since we have limited assets
   {
     src: '/gallery/gallery-1.jpeg',
-    alt: 'Bamboo groves',
-    title: 'Bamboo Groves',
+    alt: 'Quis nostrud exercitation',
+    title: 'Ullamco laboris nisi',
     colSpan: 'md:col-span-1 md:row-span-2',
   },
   {
     src: '/hero.jpg',
-    alt: 'River stream',
-    title: 'Pristine Waters',
+    alt: 'Ut aliquip ex ea commodo',
+    title: 'Duis aute irure dolor',
     colSpan: 'md:col-span-1 md:row-span-1',
   },
 ]
