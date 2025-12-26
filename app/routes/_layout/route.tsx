@@ -1,6 +1,9 @@
 import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router'
+import BookingForm from '~/components/booking-form'
+import { Button } from '~/components/ui/button'
+import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog'
 import {
   Sheet,
   SheetContent,
@@ -89,21 +92,32 @@ export default function Layout() {
         </div>
       </header>
 
-      {/* Floating Book Now Button - Mobile Only */}
-      {!location.pathname.includes('/booking') && (
-        <Link
-          to="/booking"
-          className={`
-            fixed right-6 bottom-6 z-40 flex items-center gap-2 rounded-full
-            bg-primary px-6 py-3 font-bold text-primary-foreground shadow-lg
-            transition-all
-            hover:scale-105
-            md:hidden
+      <div className={`
+        fixed right-6 bottom-6 z-40
+        md:hidden
+      `}
+      >
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className={`
+              flex items-center gap-2 rounded-full px-6 py-3 font-bold shadow-lg
+              transition-all
+              hover:scale-105
+            `}
+            >
+
+              Book Now
+            </Button>
+          </DialogTrigger>
+          <DialogContent className={`
+            max-h-[90vh] overflow-y-auto
+            sm:max-w-2xl
           `}
-        >
-          BOOK NOW
-        </Link>
-      )}
+          >
+            <BookingForm />
+          </DialogContent>
+        </Dialog>
+      </div>
 
       <main className="flex-1">
         <Outlet />

@@ -1,3 +1,4 @@
+import BookingForm from '~/components/booking-form'
 import { bookingData } from '~/lib/data'
 import { parseCurrency } from '~/lib/parse-currency'
 
@@ -7,6 +8,13 @@ export default function Booking() {
   return (
     <div className="flex flex-col pt-20">
       <div className="container mx-auto space-y-12 px-4 py-12">
+        <div className={`
+          hidden rounded-2xl border p-4
+          md:block
+        `}
+        >
+          <BookingForm />
+        </div>
 
         {/* Important Info / Contact */}
         <div className={`
@@ -15,7 +23,8 @@ export default function Booking() {
         `}
         >
           <div className={`
-            rounded-2xl bg-primary p-8 text-primary-foreground shadow-lg
+            rounded-2xl bg-primary p-4 text-primary-foreground shadow-lg
+            md:p-8
           `}
           >
             <h2 className="mb-6 text-2xl font-bold">Booking Information</h2>
@@ -51,7 +60,9 @@ export default function Booking() {
 
           <div className="space-y-8">
             <div className={`
-              overflow-hidden rounded-2xl border border-border bg-card shadow-sm
+              overflow-hidden rounded-2xl border border-border bg-card p-4
+              shadow-sm
+              md:p-8
             `}
             >
               <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
@@ -81,7 +92,8 @@ export default function Booking() {
             </div>
 
             <div className={`
-              rounded-2xl border border-border bg-card p-8 shadow-sm
+              rounded-2xl border border-border bg-card p-4 shadow-sm
+              md:p-8
             `}
             >
               <h2 className="mb-4 text-xl font-bold">Entry Fees</h2>
@@ -107,7 +119,11 @@ export default function Booking() {
         </div>
 
         {/* Accommodation Table */}
-        <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+        <div className={`
+          rounded-2xl border border-border bg-card p-4 shadow-sm
+          md:p-8
+        `}
+        >
           <div className="border-b border-border bg-muted px-8 py-4">
             <h2 className="text-xl font-bold">{accommodationRates.title}</h2>
           </div>
@@ -161,7 +177,11 @@ export default function Booking() {
         </div>
 
         {/* Camera Charges */}
-        <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+        <div className={`
+          rounded-2xl border border-border bg-card p-4 shadow-sm
+          md:p-8
+        `}
+        >
           <h2 className="mb-2 text-xl font-bold">Camera Charges</h2>
           <p className="mb-6 text-sm text-muted-foreground">{cameraCharges.policy}</p>
 
