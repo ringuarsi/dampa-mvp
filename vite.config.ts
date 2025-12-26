@@ -1,8 +1,9 @@
+import netlifyReactRouter from '@netlify/vite-plugin-react-router'
 import { reactRouter } from '@react-router/dev/vite'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 import babel from 'vite-plugin-babel'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [
@@ -19,6 +20,7 @@ export default defineConfig({
       },
     }),
     tsconfigPaths(),
+    netlifyReactRouter(),
   ],
   server: {
     port: 3000,
