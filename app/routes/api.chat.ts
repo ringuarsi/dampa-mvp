@@ -53,10 +53,17 @@ export async function action({ request }: ActionFunctionArgs) {
       return data({
         error: 'OpenAI Auth Check Failed',
         details: 'Could not list models. Key might be invalid or quota exceeded.',
-        originalError: modelError.message,
-        errorMsg: modelError,
-        apiKey,
-      }, { status: modelError.status })
+        debug: {
+          message: modelError.message,
+          name: modelError.name,
+          stack: modelError.stack, // Be careful exposing this in prod!
+          type: modelError.type,
+          code: modelError.code,
+          param: modelError.param,
+          fullString: String(modelError),
+          raw: JSON.parse(JSON.stringify(modelError, Object.getOwnPropertyNames(modelError))),
+        },
+      }, { status: 401 })
     }
 
     const completion = await openai.chat.completions.create({
@@ -80,11 +87,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
     return data({
       error: 'OpenAI API Failure',
-      details: error.message || String(error),
-      name: error.name,
-      keyPrefix: keyHint, // Helps verify if the key starts with 'sk-'
+      keyPrefix: keyHint,
       source: 'OpenAI',
-      modelError: error,
+      debug: {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+        type: error.type,
+        code: error.code,
+        param: error.param,
+        fullString: String(error),
+        raw: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error))),
+      },
     }, { status: 500 })
   }
 }
