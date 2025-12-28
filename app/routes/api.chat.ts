@@ -29,10 +29,21 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Fetch the latest system prompt (from Blobs or default)
-    const systemPrompt = await getSystemPrompt()
+    let systemPrompt
+    try {
+      systemPrompt = await getSystemPrompt()
+    }
+    catch (kbError: any) {
+      console.error('Knowledge Base Error:', kbError)
+      return data({
+        error: 'Knowledge Base Failure',
+        details: kbError.message,
+        source: 'Netlify Blobs',
+      }, { status: 500 })
+    }
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo', // Cost-effective and sufficient for this task
+      model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userMessage },
@@ -47,11 +58,15 @@ export async function action({ request }: ActionFunctionArgs) {
   }
   catch (error: any) {
     console.error('OpenAI API Error:', error)
-    // RETURN ACTUAL ERROR FOR DEBUGGING (Remove for production!)
+    // eslint-disable-next-line node/prefer-global/process
+    const keyHint = process.env.OPEN_AI_KEY ? `${process.env.OPEN_AI_KEY.substring(0, 3)}...` : 'MISSING'
+
     return data({
-      error: 'Failed to generate response',
+      error: 'OpenAI API Failure',
       details: error.message || String(error),
       name: error.name,
+      keyPrefix: keyHint, // Helps verify if the key starts with 'sk-'
+      source: 'OpenAI',
     }, { status: 500 })
   }
 }
