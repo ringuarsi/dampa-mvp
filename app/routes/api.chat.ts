@@ -10,7 +10,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   // Check multiple common environment variable names for the API key
   // eslint-disable-next-line node/prefer-global/process
-  let apiKey = process.env.OPEN_AI_KEY || process.env.OPENAI_API_KEY || process.env.VITE_OPEN_AI_KEY
+  const apiKey = process.env.OPEN_AI_KEY
 
   if (!apiKey) {
     console.error('SERVER ERROR: OpenAI API Key is missing. Checked: OPEN_AI_KEY, OPENAI_API_KEY, VITE_OPEN_AI_KEY.')
@@ -55,7 +55,7 @@ export async function action({ request }: ActionFunctionArgs) {
         details: 'Could not list models. Key might be invalid or quota exceeded.',
         originalError: modelError.message,
         errorMsg: modelError,
-      }, { status: 401 })
+      }, { status: modelError.status })
     }
 
     const completion = await openai.chat.completions.create({
