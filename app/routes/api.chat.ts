@@ -18,7 +18,7 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   // Sanitize key: remove whitespace and potential wrapping quotes (common mistake in Netlify UI)
-  apiKey = apiKey.trim().replace(/^["']|["']$/g, '')
+  // apiKey = apiKey.trim().replace(/^["']|["']$/g, '')
 
   const openai = new OpenAI({ apiKey })
 
