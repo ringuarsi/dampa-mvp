@@ -10,15 +10,42 @@ export async function action({ request }: ActionFunctionArgs) {
 
   // Check multiple common environment variable names for the API key
   // eslint-disable-next-line node/prefer-global/process
-  const apiKey = process.env.OPEN_AI_KEY
+  let apiKey = process.env.OPEN_AI_KEY
 
   if (!apiKey) {
     console.error('SERVER ERROR: OpenAI API Key is missing. Checked: OPEN_AI_KEY, OPENAI_API_KEY, VITE_OPEN_AI_KEY.')
     return data({ error: 'Server configuration error: Missing API Key' }, { status: 500 })
   }
 
-  // Sanitize key: remove whitespace and potential wrapping quotes (common mistake in Netlify UI)
-  // apiKey = apiKey.trim().replace(/^["']|["']$/g, '')
+  // Sanitize key: remove whitespace and potential wrapping quotes
+  apiKey = apiKey.trim().replace(/^["']|["']$/g, '')
+
+  // DIAGNOSTIC: Raw fetch to see if it's the library or the key
+  try {
+    const rawResp = await fetch('https://api.openai.com/v1/models', {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+      },
+    })
+
+    const rawData = await rawResp.text()
+    if (!rawResp.ok) {
+      return data({
+        error: 'Raw Fetch Auth Failed',
+        status: rawResp.status,
+        statusText: rawResp.statusText,
+        body: rawData,
+        keyLength: apiKey.length,
+        keyPrefix: apiKey.substring(0, 7),
+      }, { status: 401 })
+    }
+  }
+  catch (fetchErr: any) {
+    return data({
+      error: 'Raw Fetch Network Error',
+      details: fetchErr.message,
+    }, { status: 500 })
+  }
 
   const openai = new OpenAI({ apiKey })
 
