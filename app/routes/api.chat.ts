@@ -55,6 +55,7 @@ export async function action({ request }: ActionFunctionArgs) {
         details: 'Could not list models. Key might be invalid or quota exceeded.',
         originalError: modelError.message,
         errorMsg: modelError,
+        apiKey,
       }, { status: modelError.status })
     }
 
