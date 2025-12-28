@@ -2,6 +2,7 @@ import { MenuIcon } from 'lucide-react'
 import { useState } from 'react'
 import { Link, Outlet, useLocation } from 'react-router'
 import BookingForm from '~/components/booking-form'
+import AppChatBot from '~/components/chatbot'
 import { Button } from '~/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '~/components/ui/dialog'
 import {
@@ -173,6 +174,7 @@ export default function Layout() {
         </footer>
 
       )}
+      <AppChatBot />
     </div>
   )
 }

@@ -59,6 +59,7 @@
     ]
   },
   "dependencies": {
+    "@netlify/blobs": "^10.5.0",
     "@netlify/vite-plugin-react-router": "^2.1.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-popover": "^1.1.15",
@@ -76,7 +77,9 @@
     "isbot": "^5.1.31",
     "lucide-react": "^0.548.0",
     "nuqs": "^2.7.2",
+    "openai": "^6.15.0",
     "react": "^19.2.0",
+    "react-chatbotify": "^2.5.0",
     "react-day-picker": "^9.11.1",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.4",

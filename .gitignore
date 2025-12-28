@@ -8,3 +8,6 @@
 .env
 
 .kilocode
+
+# Local Netlify folder
+.netlify

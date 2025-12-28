@@ -25,7 +25,7 @@ function ToggleCard({ label, price, checked, onChange }: { label: string, price:
           border p-4 text-left transition-all
         `,
         checked
-          ? 'border-primary bg-[#f4f64e]'
+          ? 'border-primary bg-primary text-white'
           : `
             border-border bg-card
             hover:border-primary/50
