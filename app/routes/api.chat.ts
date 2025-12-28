@@ -8,15 +8,17 @@ export async function action({ request }: ActionFunctionArgs) {
     return data({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  // initialize inside action to avoid build-time issues
-  // and ensure we access runtime env vars safely
+  // Check multiple common environment variable names for the API key
   // eslint-disable-next-line node/prefer-global/process
-  const apiKey = process.env.OPEN_AI_KEY
+  let apiKey = process.env.OPEN_AI_KEY || process.env.OPENAI_API_KEY || process.env.VITE_OPEN_AI_KEY
 
   if (!apiKey) {
-    console.error('OpenAI API Key is missing. Please set OPEN_AI_KEY in Netlify environment variables.')
-    return data({ error: 'Server configuration error' }, { status: 500 })
+    console.error('SERVER ERROR: OpenAI API Key is missing. Checked: OPEN_AI_KEY, OPENAI_API_KEY, VITE_OPEN_AI_KEY.')
+    return data({ error: 'Server configuration error: Missing API Key' }, { status: 500 })
   }
+
+  // Sanitize key: remove whitespace and potential wrapping quotes (common mistake in Netlify UI)
+  apiKey = apiKey.trim().replace(/^["']|["']$/g, '')
 
   const openai = new OpenAI({ apiKey })
 
