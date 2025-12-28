@@ -1,6 +1,6 @@
 import type { ActionFunctionArgs } from 'react-router'
 import { Form, redirect, useLoaderData, useNavigation } from 'react-router'
-import { FIXED_SYSTEM_INSTRUCTIONS, getKnowledgeBase, updateKnowledgeBase } from '~/lib/knowledge-base'
+import { getKnowledgeBase, updateKnowledgeBase } from '~/lib/knowledge-base'
 
 export async function loader() {
   const currentKb = await getKnowledgeBase()
@@ -38,12 +38,12 @@ export default function AdminPage() {
       `}
       >
         {/* Read-only Rules Section */}
-        <div className="rounded-md border border-gray-200 bg-gray-50 p-6">
+        {/* <div className="rounded-md border border-gray-200 bg-gray-50 p-6">
           <h2 className="mb-4 text-lg font-semibold text-gray-700">Fixed System Rules</h2>
           <pre className="font-mono text-xs whitespace-pre-wrap text-gray-600">
             {FIXED_SYSTEM_INSTRUCTIONS}
           </pre>
-        </div>
+        </div> */}
 
         {/* Editable Knowledge Base Section */}
         <div className="lg:col-span-2">
