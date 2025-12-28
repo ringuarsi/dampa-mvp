@@ -8,7 +8,7 @@ import { getSystemPrompt } from '~/lib/knowledge-base'
 // We use VITE_ prefix because the user specified it, but in the backend function we access it via process.env
 const openai = new OpenAI({
   // eslint-disable-next-line node/prefer-global/process
-  apiKey: process.env.VITE_OPEN_AI_KEY,
+  apiKey: process.env.OPEN_AI_KEY,
 })
 
 export async function action({ request }: ActionFunctionArgs) {
