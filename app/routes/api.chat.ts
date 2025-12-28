@@ -42,6 +42,20 @@ export async function action({ request }: ActionFunctionArgs) {
       }, { status: 500 })
     }
 
+    // Verify basic connectivity
+    try {
+      await openai.models.list()
+    }
+    catch (modelError: any) {
+      console.error('Model List Error:', modelError)
+      return data({
+        error: 'OpenAI Auth Check Failed',
+        details: 'Could not list models. Key might be invalid or quota exceeded.',
+        originalError: modelError.message,
+        errorMsg: modelError,
+      }, { status: 401 })
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -67,6 +81,7 @@ export async function action({ request }: ActionFunctionArgs) {
       name: error.name,
       keyPrefix: keyHint, // Helps verify if the key starts with 'sk-'
       source: 'OpenAI',
+      modelError: error,
     }, { status: 500 })
   }
 }
