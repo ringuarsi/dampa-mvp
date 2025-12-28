@@ -45,8 +45,13 @@ export async function action({ request }: ActionFunctionArgs) {
 
     return data({ response: aiResponse })
   }
-  catch (error) {
+  catch (error: any) {
     console.error('OpenAI API Error:', error)
-    return data({ error: 'Failed to generate response' }, { status: 500 })
+    // RETURN ACTUAL ERROR FOR DEBUGGING (Remove for production!)
+    return data({
+      error: 'Failed to generate response',
+      details: error.message || String(error),
+      name: error.name,
+    }, { status: 500 })
   }
 }
