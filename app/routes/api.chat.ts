@@ -3,18 +3,22 @@ import OpenAI from 'openai'
 import { data } from 'react-router'
 import { getSystemPrompt } from '~/lib/knowledge-base'
 
-// Initialize OpenAI client
-// Note: In a real server environment, process.env.VITE_OPEN_AI_KEY will be available.
-// We use VITE_ prefix because the user specified it, but in the backend function we access it via process.env
-const openai = new OpenAI({
-  // eslint-disable-next-line node/prefer-global/process
-  apiKey: process.env.OPEN_AI_KEY,
-})
-
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
     return data({ error: 'Method not allowed' }, { status: 405 })
   }
+
+  // initialize inside action to avoid build-time issues
+  // and ensure we access runtime env vars safely
+  // eslint-disable-next-line node/prefer-global/process
+  const apiKey = process.env.OPEN_AI_KEY
+
+  if (!apiKey) {
+    console.error('OpenAI API Key is missing. Please set OPEN_AI_KEY in Netlify environment variables.')
+    return data({ error: 'Server configuration error' }, { status: 500 })
+  }
+
+  const openai = new OpenAI({ apiKey })
 
   try {
     const body = await request.json()
