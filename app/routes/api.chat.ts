@@ -7,7 +7,8 @@ import { getSystemPrompt } from '~/lib/knowledge-base'
 // Note: In a real server environment, process.env.VITE_OPEN_AI_KEY will be available.
 // We use VITE_ prefix because the user specified it, but in the backend function we access it via process.env
 const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPEN_AI_KEY,
+  // eslint-disable-next-line node/prefer-global/process
+  apiKey: process.env.VITE_OPEN_AI_KEY,
 })
 
 export async function action({ request }: ActionFunctionArgs) {
