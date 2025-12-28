@@ -6,6 +6,7 @@
 /build/
 .aider*
 .env
+.env.development
 
 .kilocode
 
